@@ -1,0 +1,116 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+.main {
+  background-image: url("./../img/bg-2.jpg");
+  background-size: cover;
+  background-position: center center;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+.main::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000e9;
+  content: "";
+  z-index: 2;
+}
+.main-area {
+  position: relative;
+  z-index: 5;
+  background-color: rgba(250, 250, 250, 1);
+  min-height: 90vh;
+}
+.header h2 {
+  font-size: 30px;
+  font-weight: 300;
+}
+.header p {
+  font-size: 14px;
+  font-weight: 400;
+}
+nav ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+nav ul li {
+  list-style-type: none;
+}
+nav ul li a {
+  text-decoration: none;
+  text-transform: capitalize;
+  display: block;
+  margin: 5px 10px;
+  color: #222;
+  cursor: pointer;
+}
+
+table th {
+  font-size: 16px;
+  font-weight: 400;
+}
+table td {
+  font-size: 15px;
+}
+.add-form {
+  border-radius: 10px;
+}
+
+.add-form label {
+  margin-bottom: 5px;
+}
+.add-form .form-group {
+  margin-bottom: 10px;
+}
+.add-form input {
+  padding: 10px;
+}
+.add-form input:focus {
+  outline: none;
+  box-shadow: none;
+}
+.button {
+  background: #222;
+  color: #fff;
+  padding: 7px 17px;
+  border: none;
+  text-transform: capitalize;
+  border: 1px solid transparent;
+  transition: all ease-in-out 0.3s;
+  border-radius: 4px;
+}
+.button:hover {
+  background: #fff;
+  color: #222;
+  border: 1px solid #222;
+}
+.form-group.success input {
+  border-color: green;
+}
+.form-group p{
+  color: rgba(255, 0, 0, 0.524);
+  font-size: 14px;
+  font-weight: 300;
+}
+table td button {
+  text-transform: capitalize;
+  background-color: #222;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
