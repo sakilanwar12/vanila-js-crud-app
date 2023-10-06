@@ -11,30 +11,29 @@ const stClass = document.getElementById("class");
 const updateForm = document.getElementById("update-form");
 
 
-document.onload = generatesReports();
+document.onload = generateReports();
 
 // show content
 
 function show(content) {
+  // Hide all sections initially
+  addForm.classList.add("d-none");
+  reportsArea.classList.add("d-none");
+  updateForm.classList.add("d-none");
+
   if (content === "add") {
     addForm.classList.remove("d-none");
-    reportsArea.classList.add("d-none");
-    updateForm.classList.add("d-none");
   } else if (content === "all") {
     reportsArea.classList.remove("d-none");
-    addForm.classList.add("d-none");
-    updateForm.classList.add("d-none");
-    generatesReports();
+    generateReports();
   } else if (content === "update") {
     updateForm.classList.remove("d-none");
-    reportsArea.classList.add("d-none");
-    addForm.classList.add("d-none");
   }
 }
 
 // seeding here
 
-function seed() {
+function seed(key = "students") {
   const data = [
     {
       id: 1,
@@ -61,43 +60,46 @@ function seed() {
       number: "01813424423",
     },
   ];
-  localStorage.clear();
-  localStorage.setItem("students", JSON.stringify(data));
-  alert("Seeding has completed.");
-  location.reload();
+
+  try {
+    localStorage.clear();
+    localStorage.setItem(key, JSON.stringify(data));
+    alert(`Seeding of ${key} has completed.`);
+    location.reload();
+  } catch (error) {
+    console.error(`Error seeding ${key}:`, error);
+  }
 }
+
 
 
 // generates reports
 
-function generatesReports() {
-  let students;
-  if (localStorage.getItem("students") === null) {
-    students = [];
-  } else {
-    const data = localStorage.getItem("students");
-    students = JSON.parse(data);
-  }
-  let content = "";
-  if (students.length > 0) {
-    students.map((student) => {
-      content += `
-            <tr>
-            <td>${student.student_name}</td>
-            <td>${student.email}</td>
-            <td>${student.class}</td>
-            <td>${student.roll}</td>
-            <td>${student.number}</td>
-             <td>
-              <button type="button" onclick="updateTheStudent(${student.id})">edit</button>
-               <button  onclick="deleteTheStudent(${student.id})">delete</button>
-             </td>
-            </tr>
-            `;
-    });
-  }
+
+function generateReports() {
+  const students = JSON.parse(localStorage.getItem("students")) || [];
 
   const tbody = reportsArea.querySelector("tbody");
+
+  if (students.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='6'>No students found.</td></tr>";
+    return;
+  }
+
+  const content = students.map((student) => `
+    <tr>
+      <td>${student.student_name}</td>
+      <td>${student.email}</td>
+      <td>${student.class}</td>
+      <td>${student.roll}</td>
+      <td>${student.number}</td>
+      <td>
+        <button type="button" onclick="updateTheStudent(${student.id})">edit</button>
+        <button onclick="deleteTheStudent(${student.id})">delete</button>
+      </td>
+    </tr>
+  `).join('');
+
   tbody.innerHTML = content;
 }
 
@@ -121,14 +123,15 @@ const validateStudentName = (studentEl) => {
 const validateEmail = (input) => {
   const email = input.value;
   const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   if (pattern.test(email)) {
     showSuccess(input);
     return true;
-  } else {
-    showError(input, "Your email is not valid.");
-    return false;
   }
-};
+
+  showError(input, "Please enter a valid email address.");
+  return false;
+}
 
 const validateClass = (input) => {
   const stClass = input.value;
@@ -188,7 +191,7 @@ const deleteTheStudent = (id) => {
     const students = getData();
     const newStudents = students.filter((student) => student.id !== id);
     localStorage.setItem("students", JSON.stringify(newStudents));
-    generatesReports();
+    generateReports();
   }
 };
 
